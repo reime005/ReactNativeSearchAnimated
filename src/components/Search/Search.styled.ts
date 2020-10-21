@@ -10,10 +10,8 @@ export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
   padding: 24px;
   padding-left: 48px;
   padding-right: 48px;
-  margin: 24px;
   align-items: center;
   justify-content: center;
-  border-radius: 54px;
   background-color: #fff;
   flex-direction: row;
 `;
@@ -21,6 +19,6 @@ export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
 export const StyledSearchWrapperText = styled.TextInput`
   font-size: 16px;
   font-weight: 600;
-  padding-left: 8px;
+  padding-left: 16px;
   flex: 1;
 `;
