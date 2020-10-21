@@ -8,6 +8,8 @@ const AnimatedTouchableOpacity: ComponentType<TouchableOpacityProps> = Animated.
 
 export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
   padding: 24px;
+  padding-left: 48px;
+  padding-right: 48px;
   margin: 24px;
   align-items: center;
   justify-content: center;
@@ -16,8 +18,9 @@ export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
   flex-direction: row;
 `;
 
-export const StyledSearchWrapperText = styled(BaseText)`
+export const StyledSearchWrapperText = styled.TextInput`
   font-size: 16px;
   font-weight: 600;
   padding-left: 8px;
+  flex: 1;
 `;
