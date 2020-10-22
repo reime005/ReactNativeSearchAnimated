@@ -1,24 +1,42 @@
 import { ComponentType } from 'react';
-import { TouchableOpacity, TouchableOpacityBase, TouchableOpacityProps, View } from 'react-native';
+import {
+  Dimensions,
+  TouchableOpacity,
+  TouchableOpacityBase,
+  TouchableOpacityProps,
+  View,
+} from 'react-native';
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import { BaseText } from '../Basic/Basic.styled';
 
-const AnimatedTouchableOpacity: ComponentType<TouchableOpacityProps> = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedTouchableOpacity: ComponentType<TouchableOpacityProps> = Animated.createAnimatedComponent(
+  TouchableOpacity,
+);
 
 export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
-  padding: 24px;
   padding-left: 48px;
   padding-right: 48px;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   background-color: #fff;
   flex-direction: row;
+  min-height: 50px;
+`;
+
+export const StyledSearchBar = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
 `;
 
 export const StyledSearchWrapperText = styled.TextInput`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
+  text-decoration: none;
   padding-left: 16px;
-  flex: 1;
+  width: 100%;
+  height: 100%;
 `;
