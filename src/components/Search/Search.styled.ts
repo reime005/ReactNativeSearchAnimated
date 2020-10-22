@@ -15,12 +15,13 @@ const AnimatedTouchableOpacity: ComponentType<TouchableOpacityProps> = Animated.
 );
 
 export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
-  padding-left: 48px;
-  padding-right: 48px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: #fff;
-  flex-direction: row;
+  background-color: #fafafa;
+  flex-direction: column;
   min-height: 50px;
 `;
 
@@ -30,13 +31,15 @@ export const StyledSearchBar = styled.View`
   align-items: center;
   justify-content: center;
   height: 50px;
+  padding-right: 20px;
+  padding-left: 20px;
 `;
 
 export const StyledSearchWrapperText = styled.TextInput`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   text-decoration: none;
-  padding-left: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
   width: 100%;
-  height: 100%;
 `;

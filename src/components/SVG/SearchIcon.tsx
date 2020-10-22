@@ -1,14 +1,10 @@
-import React from 'react'
+import React, { SVGProps } from 'react'
 import SVG from '../../assets/svg/search.svg'
 
-interface Props {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+import { SVGWrapperProps, defaultSVGProps } from './SVGWrapper'
 
-export const SearchIcon = (props: Props) => {
+export const SearchIcon = (props: SVGWrapperProps) => {
   return (
-    <SVG width={22} height={22} {...props} />
+    <SVG {...defaultSVGProps} {...props} />
   )
 }
