@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import Animated, {
+  call,
   cancelAnimation,
   delay,
   Easing,
@@ -27,6 +28,8 @@ import { CloseIcon } from '../SVG/CloseIcon';
 import { SearchIcon } from '../SVG/SearchIcon';
 import * as B from '../Basic/Basic.styled';
 import * as S from './Search.styled';
+import { BackIcon } from '../SVG/BackIcon';
+import { SearchContent } from '../SearchContent/SearchContent';
 
 const springConfig: Animated.WithSpringConfig = {
   damping: 25,
@@ -39,7 +42,7 @@ const DEFAULT_RADIUS = 52;
 const DEFAULT_MARGIN = 36;
 const MIN_HEIGHT_PERC = 50;
 const MIN_MARGIN = 16;
-const MAX_HEIGHT_PERC = Dimensions.get('screen').height * 0.75;
+const MAX_HEIGHT_PERC = Dimensions.get('screen').height * 0.85;
 
 export const Search = () => {
   const height = useSharedValue(MIN_HEIGHT_PERC);
@@ -51,7 +54,6 @@ export const Search = () => {
   const [searchValue, setSearchValue] = React.useState('');
   const [editable, setEditable] = React.useState(false);
   const inRef = React.useRef<TextInput | null>(null);
-  const aref =  useAnimatedRef<Animated.View>();
 
   React.useEffect(() => {
     if (editable) {
@@ -71,13 +73,11 @@ export const Search = () => {
   });
 
   const onAnimPress = () => {
-    const isClosed = height.value < 60;
+    const isClosed = height.value < MIN_HEIGHT_PERC * 1.5;
 
     if (isClosed) {
-        opacity.value = delay(200, withSpring(1));
-        height.value = withSpring(MAX_HEIGHT_PERC, springConfig, (finished) =>{
-        setEditable(!editable);
-      });
+      opacity.value = delay(200, withSpring(1));
+      height.value = withSpring(MAX_HEIGHT_PERC, springConfig);
 
       margin.value = interpolate(
         height.value,
@@ -93,9 +93,7 @@ export const Search = () => {
     } else {
       opacity.value = delay(200, withSpring(0));
 
-      height.value = withSpring(MIN_HEIGHT_PERC, springConfig, (finished) =>{
-        setEditable(!editable);
-      });
+      height.value = withSpring(MIN_HEIGHT_PERC, springConfig);
 
       margin.value = interpolate(
         height.value,
@@ -118,20 +116,20 @@ export const Search = () => {
     );
   };
 
-  const tmpStyle = useAnimatedStyle(() => {
-    return {
-      opacity: opacity.value,
-    };
-  });
-
   return (
     <>
       <S.StyledSearchWrapper
         activeOpacity={0.95}
-        onPress={onAnimPress}
+        onPress={!editable ? onAnimPress : undefined}
         style={[animatedStyle, styles.shadow]}>
         <S.StyledSearchBar>
-          <SearchIcon color="#8d0fd1" />
+          {editable ? (
+            <TouchableOpacity onPress={onAnimPress}>
+              <BackIcon />
+            </TouchableOpacity>
+          ) : (
+            <SearchIcon />
+          )}
 
           <S.StyledSearchWrapperText
             pointerEvents="box-none"
@@ -148,21 +146,7 @@ export const Search = () => {
           </TouchableOpacity>
         </S.StyledSearchBar>
 
-        <B.FlexBox ref={aref} style={[tmpStyle]}>
-          <B.BaseScrollView>
-            <B.Divider />
-
-            <Text>foo</Text>
-            <Text>foo</Text>
-            <Text>foo</Text>
-            <Text>foo</Text>
-            <Text>foo</Text>
-            <Text>foo</Text>
-            <Text>foo</Text>
-            <Text>foo</Text>
-            <Text>foo</Text>
-          </B.BaseScrollView>
-        </B.FlexBox>
+        <SearchContent opacity={opacity} />
       </S.StyledSearchWrapper>
     </>
   );

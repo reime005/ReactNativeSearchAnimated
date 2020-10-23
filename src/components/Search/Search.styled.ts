@@ -20,7 +20,7 @@ export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
   padding-bottom: 24px;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: #fafafa;
+  background-color: ${props => props.theme.searchBackgroundColor};
   flex-direction: column;
   min-height: 50px;
 `;
