@@ -16,74 +16,36 @@ import {
   View,
   Text,
   StatusBar,
+  Image,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import { Search } from './src/components/Search/Search';
 
-declare const global: {HermesInternal: null | {}};
+declare const global: { HermesInternal: null | {} };
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={{flex:1}}>
-        <View style={{ height: '100%' }}>
-            <Search />
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ height: 100, zIndex: 1 }}>
+          <Search />
+        </View>
 
-          </View>
         <ScrollView
+          alwaysBounceVertical={false}
           contentInsetAdjustmentBehavior="automatic"
-          style={{}}>
+          contentContainerStyle={{ alignItems: 'center' }}
+          style={{ flex: 1, marginHorizontal: 16 }}>
+          <Image
+            style={{ width: '100%', height: 500, borderRadius: 16 }}
+            source={require('./src/assets/coffee.jpg')}
+          />
         </ScrollView>
       </SafeAreaView>
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
 
 export default App;

@@ -17,7 +17,9 @@ export const SearchContent = (props: Props) => {
 
   return (
     <B.FlexBox style={[contentStyle]}>
-      <B.BaseScrollView>
+      <B.BaseScrollView
+        alwaysBounceVertical={false}
+        contentContainerStyle={{ paddingTop: 8 }}>
         <Text>item</Text>
         <Text>item</Text>
         <Text>item</Text>

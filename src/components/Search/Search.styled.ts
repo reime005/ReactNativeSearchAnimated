@@ -23,6 +23,7 @@ export const StyledSearchWrapper = styled(AnimatedTouchableOpacity)`
   background-color: ${props => props.theme.searchBackgroundColor};
   flex-direction: column;
   min-height: 50px;
+  position: absolute;
 `;
 
 export const StyledSearchBar = styled.View`

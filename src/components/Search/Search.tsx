@@ -23,6 +23,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import FastImage from 'react-native-fast-image'
 import Svg from 'react-native-svg';
 import { CloseIcon } from '../SVG/CloseIcon';
 import { SearchIcon } from '../SVG/SearchIcon';
@@ -43,6 +44,7 @@ const DEFAULT_MARGIN = 36;
 const MIN_HEIGHT_PERC = 50;
 const MIN_MARGIN = 16;
 const MAX_HEIGHT_PERC = Dimensions.get('screen').height * 0.85;
+const SCREEN_WIDTH = Dimensions.get("screen").width;
 
 export const Search = () => {
   const height = useSharedValue(MIN_HEIGHT_PERC);
@@ -69,6 +71,8 @@ export const Search = () => {
       margin: margin.value,
       borderRadius: borderRadius.value,
       height: height.value,
+      width: SCREEN_WIDTH - margin.value,
+      left: -margin.value / 2,
     };
   });
 
@@ -117,11 +121,10 @@ export const Search = () => {
   };
 
   return (
-    <>
       <S.StyledSearchWrapper
-        activeOpacity={0.95}
+        activeOpacity={editable ? 1 : 0.95}
         onPress={!editable ? onAnimPress : undefined}
-        style={[animatedStyle, styles.shadow]}>
+        style={[{ zIndex: 9999}, animatedStyle, styles.shadow]}>
         <S.StyledSearchBar>
           {editable ? (
             <TouchableOpacity onPress={onAnimPress}>
@@ -148,7 +151,6 @@ export const Search = () => {
 
         <SearchContent opacity={opacity} />
       </S.StyledSearchWrapper>
-    </>
   );
 };
 
