@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@n1ru4l/use-async-effect": "1.2.4",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-fast-image": "^8.3.2",

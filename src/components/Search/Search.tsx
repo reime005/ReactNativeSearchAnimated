@@ -2,35 +2,24 @@ import React from 'react';
 import {
   Dimensions,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import Animated, {
-  call,
-  cancelAnimation,
   delay,
-  Easing,
   interpolate,
-  repeat,
-  sequence,
-  timing,
-  useAnimatedRef,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withSpring,
-  withTiming,
 } from 'react-native-reanimated';
-import FastImage from 'react-native-fast-image'
-import Svg from 'react-native-svg';
 import { CloseIcon } from '../SVG/CloseIcon';
 import { SearchIcon } from '../SVG/SearchIcon';
-import * as B from '../Basic/Basic.styled';
 import * as S from './Search.styled';
 import { BackIcon } from '../SVG/BackIcon';
 import { SearchContent } from '../SearchContent/SearchContent';
+import { searchProducts } from '../../api/searchProducts';
+import { SearchItem } from '../SearchItem/SearchItem';
+import useAsyncEffect from '@n1ru4l/use-async-effect';
 
 const springConfig: Animated.WithSpringConfig = {
   damping: 25,
@@ -44,7 +33,7 @@ const DEFAULT_MARGIN = 36;
 const MIN_HEIGHT_PERC = 50;
 const MIN_MARGIN = 16;
 const MAX_HEIGHT_PERC = Dimensions.get('screen').height * 0.85;
-const SCREEN_WIDTH = Dimensions.get("screen").width;
+const SCREEN_WIDTH = Dimensions.get('screen').width;
 
 export const Search = () => {
   const height = useSharedValue(MIN_HEIGHT_PERC);
@@ -56,6 +45,8 @@ export const Search = () => {
   const [searchValue, setSearchValue] = React.useState('');
   const [editable, setEditable] = React.useState(false);
   const inRef = React.useRef<TextInput | null>(null);
+  const [loading] = React.useState(false);
+  const [data, setData] = React.useState<SearchItem[]>();
 
   React.useEffect(() => {
     if (editable) {
@@ -64,6 +55,30 @@ export const Search = () => {
       inRef.current?.blur();
     }
   });
+
+  useAsyncEffect(
+    function* (_, c) {
+      if (!searchValue || !searchValue.length) {
+        return;
+      }
+
+      const { products } = yield* c(searchProducts(searchValue));
+
+      setData(
+        products.map((p: any) => {
+          const { image_url, quantity, product_name, ingredients_text } = p;
+
+          return {
+            image_url,
+            quantity,
+            product_name,
+            ingredients_text,
+          };
+        }),
+      );
+    },
+    [searchValue],
+  );
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -121,36 +136,39 @@ export const Search = () => {
   };
 
   return (
-      <S.StyledSearchWrapper
-        activeOpacity={editable ? 1 : 0.95}
-        onPress={!editable ? onAnimPress : undefined}
-        style={[{ zIndex: 9999}, animatedStyle, styles.shadow]}>
-        <S.StyledSearchBar>
-          {editable ? (
-            <TouchableOpacity onPress={onAnimPress}>
-              <BackIcon />
-            </TouchableOpacity>
-          ) : (
-            <SearchIcon />
-          )}
-
-          <S.StyledSearchWrapperText
-            pointerEvents="box-none"
-            placeholder={DEFAULT_SEARCH}
-            numberOfLines={1}
-            value={searchValue}
-            ref={inRef}
-            onChangeText={setSearchValue}
-            editable={editable}
-          />
-
-          <TouchableOpacity onPress={() => inRef.current?.clear()}>
-            <CloseIcon color="grey" />
+    <S.StyledSearchWrapper
+      activeOpacity={editable ? 1 : 0.95}
+      onPress={!editable ? onAnimPress : undefined}
+      style={[{ zIndex: 9999 }, animatedStyle, styles.shadow]}>
+      <S.StyledSearchBar>
+        {editable ? (
+          <TouchableOpacity onPress={onAnimPress}>
+            <BackIcon />
           </TouchableOpacity>
-        </S.StyledSearchBar>
+        ) : (
+          <SearchIcon />
+        )}
 
-        <SearchContent opacity={opacity} />
-      </S.StyledSearchWrapper>
+        <S.StyledSearchWrapperText
+          pointerEvents="box-none"
+          placeholder={DEFAULT_SEARCH}
+          numberOfLines={1}
+          value={searchValue}
+          ref={inRef}
+          onChangeText={setSearchValue}
+          onEndEditing={() => {
+            searchProducts(searchValue);
+          }}
+          editable={editable}
+        />
+
+        <TouchableOpacity onPress={() => inRef.current?.clear()}>
+          <CloseIcon color="grey" />
+        </TouchableOpacity>
+      </S.StyledSearchBar>
+
+      <SearchContent opacity={opacity} loading={loading} data={data} />
+    </S.StyledSearchWrapper>
   );
 };
 

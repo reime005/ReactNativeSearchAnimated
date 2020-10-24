@@ -1,5 +1,4 @@
-import { ComponentType } from 'react';
-import { View, ViewProps } from 'react-native';
+import { Animated as A } from 'react-native';
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
@@ -8,7 +7,7 @@ export const BaseText = styled.Text`
   font-size: 14px;
 `;
 
-export const BaseScrollView = styled.ScrollView`
+export const BaseScrollView = styled(A.FlatList)`
   flex: 1;
   width: 100%;
 `;
