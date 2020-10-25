@@ -1,6 +1,6 @@
 import { config } from '../config/config';
 
-export const searchProducts = (term: string, mock = false) => {
+export const searchProducts = (term: string, mock = false, controller: AbortController) => {
   if (mock) {
     return new Promise(res => {
       setTimeout(() => {
@@ -15,6 +15,7 @@ export const searchProducts = (term: string, mock = false) => {
     )}&search_simple=1&action=process&json=1`,
     {
       headers: { ...config.userAgent },
+      signal: controller.signal
     },
   ).then((r) => r.json());
 };

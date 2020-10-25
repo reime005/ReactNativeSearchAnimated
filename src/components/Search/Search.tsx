@@ -57,12 +57,15 @@ export const Search = () => {
   });
 
   useAsyncEffect(
-    function* (_, c) {
+    function* (onCancel, c) {
       if (!searchValue || !searchValue.length) {
         return;
       }
 
-      const { products } = yield* c(searchProducts(searchValue));
+      const controller = new AbortController();
+      onCancel(() => controller.abort());
+
+      const { products } = yield* c(searchProducts(searchValue, false, controller));
 
       setData(
         products.map((p: any) => {
