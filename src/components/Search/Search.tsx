@@ -139,7 +139,7 @@ export const Search = () => {
     <S.StyledSearchWrapper
       activeOpacity={editable ? 1 : 0.95}
       onPress={!editable ? onAnimPress : undefined}
-      style={[{ zIndex: 9999 }, animatedStyle, styles.shadow]}>
+      style={[animatedStyle, styles.shadow]}>
       <S.StyledSearchBar>
         {editable ? (
           <TouchableOpacity onPress={onAnimPress}>
@@ -162,7 +162,11 @@ export const Search = () => {
           editable={editable}
         />
 
-        <TouchableOpacity onPress={() => inRef.current?.clear()}>
+        <TouchableOpacity
+          onPress={() => {
+            setData(undefined);
+            inRef.current?.clear();
+          }}>
           <CloseIcon color="grey" />
         </TouchableOpacity>
       </S.StyledSearchBar>

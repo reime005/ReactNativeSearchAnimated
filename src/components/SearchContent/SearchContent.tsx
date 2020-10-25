@@ -4,6 +4,7 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import * as B from '../Basic/Basic.styled';
 import { SearchItem } from '../SearchItem/SearchItem';
+import { Text } from '../SearchItem/SearchItem.styled';
 
 interface Props {
   opacity: Animated.SharedValue<number>;
@@ -15,6 +16,8 @@ export const SearchContent = (props: Props) => {
   const contentStyle = useAnimatedStyle(() => {
     return {
       opacity: props.opacity.value,
+      zIndex: 1,
+      elevation: 1,
     };
   });
 
@@ -22,8 +25,12 @@ export const SearchContent = (props: Props) => {
 
   if (!data || loading) {
     return (
-      <B.FlexBox style={([contentStyle, { justifyContent: 'center' }])}>
-        <ActivityIndicator size="large" />
+      <B.FlexBox style={[contentStyle, { justifyContent: 'center' }]}>
+        {!data ? (
+          <Text style={{ alignSelf: 'center' }}>No data</Text>
+        ) : (
+          <ActivityIndicator size="large" />
+        )}
       </B.FlexBox>
     );
   }
@@ -33,7 +40,9 @@ export const SearchContent = (props: Props) => {
       <B.BaseScrollView
         data={data}
         showsVerticalScrollIndicator={false}
-        renderItem={({item}: any) => <SearchItem {...item} />}
+        contentInsetAdjustmentBehavior="automatic"
+        keyExtractor={(item: any) => item.image_url}
+        renderItem={({ item }: any) => <SearchItem {...item} />}
         contentContainerStyle={{ paddingTop: 8 }}
       />
     </B.FlexBox>

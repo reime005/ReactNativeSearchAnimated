@@ -29,7 +29,7 @@ const App = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ height: 100, zIndex: 1 }}>
+        <View style={{ height: 100, zIndex: 1, elevation: 1 }}>
           <Search />
         </View>
 
