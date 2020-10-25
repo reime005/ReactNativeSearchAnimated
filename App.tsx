@@ -11,26 +11,29 @@
 import React from 'react';
 import {
   SafeAreaView,
-  StyleSheet,
   ScrollView,
   View,
-  Text,
   StatusBar,
   Image,
+  Platform,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
 import { Search } from './src/components/Search/Search';
 
-declare const global: { HermesInternal: null | {} };
+const extraProps = Platform.select({
+  android: {},
+  ios: { zIndex: 5, elevation: 5 },
+});
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ height: 100, zIndex: 1, elevation: 1 }}>
-          <Search />
+        <View style={{ height: 100, ...extraProps }}>
+          <View style={{ height: '100%' }}>
+            <Search />
+          </View>
         </View>
 
         <ScrollView
